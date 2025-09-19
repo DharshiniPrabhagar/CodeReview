@@ -1,118 +1,76 @@
 import java.util.*;
 
-public class partymanagementsystem {
-
-    static int partyIdCounter = 1;
-    static int addressIdCounter = 1;
+public class party {
+    String partyid;
+    String partyNumber;
+    String partyName;
+    String partyType;
+    String partyGroup;
+    String partyStatus;
+    List<Map<String, String>> addresses = new ArrayList<>();
+    List<Map<String, String>> communications = new ArrayList<>();
 
     public static void main(String[] args) {
+        party P = new party();
+        P.partyid = "P1234";
+        P.partyNumber = "CUST0001";
+        P.partyName = "Acme Corp";
+        P.partyType = "Organization";
+        P.partyGroup = "Customer";
+        P.partyStatus = "Active";
 
-        Party party1 = new Party("John Doe", "Individual", "Customer", "Active");
-        party1.addAddress(new Address("Billing", "123 Elm St", "Suite 5", "Springfield", "IL", "USA", "62701"));
-        party1.addAddress(new Address("Shipping", "456 Oak St", "", "Springfield", "IL", "USA", "62701"));
-        party1.addCommunication(new Communication("Email", "john.doe@example.com"));
-        party1.addCommunication(new Communication("Phone", "+1-217-555-1234"));
-        System.out.println(party1);
+        Map<String, String> billTo = new HashMap<>();
+        billTo.put("PartyAddressID", "A1001");
+        billTo.put("AddressType", "Bill_To");
+        billTo.put("AddressLine1", "123 Billing St");
+        billTo.put("AddressLine2", "Suite 100");
+        billTo.put("City", "New York");
+        billTo.put("State", "NY");
+        billTo.put("Country", "USA");
+        billTo.put("PostalCode", "10001");
+        P.addresses.add(billTo);
 
-        Party party2 = new Party("Acme Corp", "Organization", "Vendor", "Active");
-        party2.addAddress(new Address("Billing", "789 Maple Ave", "", "Chicago", "IL", "USA", "60601"));
-        party2.addAddress(new Address("Shipping", "321 Pine St", "", "Chicago", "IL", "USA", "60601"));
-        party2.addCommunication(new Communication("Fax", "+1-312-555-5678"));
-        party2.addCommunication(new Communication("Email", "contact@acmecorp.com"));
-        System.out.println(party2);
-    }
-}
+        Map<String, String> shipTo = new HashMap<>();
+        shipTo.put("PartyAddressID", "A1002");
+        shipTo.put("AddressType", "Ship_To");
+        shipTo.put("AddressLine1", "456 Shipping Ave");
+        shipTo.put("AddressLine2", "");
+        shipTo.put("City", "New York");
+        shipTo.put("State", "NY");
+        shipTo.put("Country", "USA");
+        shipTo.put("PostalCode", "10002");
+        P.addresses.add(shipTo);
 
-class Party {
-    int partyId;
-    String partyNumber;
-    String name;
-    String type;
-    String group;
-    String status;
+        Map<String, String> phone = new HashMap<>();
+        phone.put("ContactType", "Phone");
+        phone.put("Contact", "123-456-7890");
+        P.communications.add(phone);
 
-    List<Address> addresses = new ArrayList<>();
-    List<Communication> communications = new ArrayList<>();
+        Map<String, String> email = new HashMap<>();
+        email.put("ContactType", "Email");
+        email.put("Contact", "contact@acme.com");
+        P.communications.add(email);
 
-    Party(String name, String type, String group, String status) {
-        this.partyId = PartyManagementSystem.partyIdCounter++;
-        this.partyNumber = generateNumber(group);
-        this.name = name;
-        this.type = type;
-        this.group = group;
-        this.status = status;
-    }
-
-    String generateNumber(String group) {
-        try {
-            Thread.sleep(1);
-        } catch (Exception e) {
+        System.out.println("Party Name: " + P.partyName);
+        System.out.println("Addresses:");
+        for (Map<String, String> addr : P.addresses) {
+            System.out.println(addr.get("AddressType") + ": " + addr.get("AddressLine1") + ", " + addr.get("City"));
         }
-        return group + "_" + System.nanoTime();
-    }
-
-    void addAddress(Address address) {
-        addresses.add(address);
-    }
-
-    void addCommunication(Communication communication) {
-        communications.add(communication);
-    }
-
-    public String toString() {
-        return "Party{id:" + partyId + ", number:" + partyNumber + ", name:" + name + ", type:" + type + ", group:" + group + ", status:" + status + ", addresses:" + addresses + ", communications:" + communications + "}";
-    }
-}
-
-class Address {
-    int addressId;
-    String addressType;
-    String line1;
-    String line2;
-    String city;
-    String state;
-    String country;
-    String postalCode;
-
-    Address(String addressType, String line1, String line2, String city, String state, String country, String postalCode) {
-        this.addressId = PartyManagementSystem.addressIdCounter++;
-        this.addressType = addressType;
-        this.line1 = line1;
-        this.line2 = line2;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-        this.postalCode = postalCode;
-    }
-
-    public String toString() {
-        return "Address{id:" + addressId + ", type:" + addressType + ", line1:" + line1 + ", line2:" + line2 + ", city:" + city + ", state:" + state + ", country:" + country + ", postalCode:" + postalCode + "}";
-    }
-}
-
-class Communication {
-    String contactType;
-    String contact;
-
-    Communication(String contactType, String contact) {
-        this.contactType = contactType;
-        this.contact = contact;
-        if (!isValid(contactType, contact)) {
-            throw new IllegalArgumentException("Invalid contact: " + contactType);
+        System.out.println("Communications:");
+        for (Map<String, String> comm : P.communications) {
+            System.out.println(comm.get("ContactType") + " - " + comm.get("Contact"));
         }
     }
 
-    boolean isValid(String type, String contact) {
-        if (type.equalsIgnoreCase("email")) {
-            return contact.matches("[\\w.-]+@[\\w.-]+\\.\\w{2,}");
-        } else if (type.equalsIgnoreCase("phone") || type.equalsIgnoreCase("fax")) {
-            return contact.matches("\\+?[0-9\\- ]{7,15}");
-        } else {
-            return false;
-        }
+    public void UNUSEDfunction() {
+        // does nothing
     }
 
-    public String toString() {
-        return "Communication{type:" + contactType + ", contact:" + contact + "}";
+    public void printPartyDetals() { // syntax error: typo in method name
+        System.out.println("Party: " + partyName);
+    }
+
+    public static void staticMethod() { // unused static method
+        System.out.println("Static method");
     }
 }
