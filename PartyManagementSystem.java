@@ -62,7 +62,7 @@ public class party {
         }
     }
 
-    public void UNUSEDfunction() {
+    public void partyfunction() {
         // does nothing
     }
 
