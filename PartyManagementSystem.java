@@ -1,150 +1,118 @@
 import java.util.*;
 
-public class badcode {
+public class partymanagementsystem {
 
-    static int id = 1;
-    static int addrid = 1;
+    static int partyIdCounter = 1;
+    static int addressIdCounter = 1;
 
     public static void main(String[] args) {
 
-        // random unused variables
-        int x = 10;
-        String unused = "hello";
-        List<String> junkList = new ArrayList<>();
-        junkList.add("delete me");
+        Party party1 = new Party("John Doe", "Individual", "Customer", "Active");
+        party1.addAddress(new Address("Billing", "123 Elm St", "Suite 5", "Springfield", "IL", "USA", "62701"));
+        party1.addAddress(new Address("Shipping", "456 Oak St", "", "Springfield", "IL", "USA", "62701"));
+        party1.addCommunication(new Communication("Email", "john.doe@example.com"));
+        party1.addCommunication(new Communication("Phone", "+1-217-555-1234"));
+        System.out.println(party1);
 
-        // create customer
-        party c = new party("Alice Johnson", "Person", "Customer", "Active" // MISSING CLOSING PARENTHESIS
-        c.addAddress(new address("Bill_To", "123 Billing St", "Suite 100", "New York", "NY", "USA", "10001"));
-        c.addAddress(new address("Ship_To", "456 Shipping Ave", "", "Brooklyn", "NY", "USA", "11201"));
-        c.addCommunication(new communication("Email", "alice@example.com"));
-        c.addCommunication(new communication("Phone", "+1-555-123-4567"));
-        System.out.println(c);
-
-        // create vendor
-        party v = new party("Tech Supplies Inc.", "Organization", "Vendor", "Active");
-        v.addAddress(new address("Bill_To", "789 Tech Blvd", "", "San Jose", "CA", "USA", "95112"));
-        v.addAddress(new address("Ship_To", "321 Supply Rd", "", "Fremont", "CA", "USA", "94536"));
-        v.addCommunication(new communication("Fax", "+1-555-987-6543"));
-        v.addCommunication(new communication("Email", "support@techsupplies.com"));
-        System.out.println(v) // MISSING SEMICOLON
-
-        // dead loop
-        for (int i = 0; i < 5; i++) {
-            // nothing
-        }
-
-        // more junk
-        int[] arr = {1, 2, 3};
-        for (int y : arr) {
-            if (y = 10) { // ASSIGNMENT INSTEAD OF COMPARISON (logical error)
-                System.out.println("Never true");
-            }
-        }
-
-        // unused method call
-        doNothing();
-    }
-
-    public static void doNothing() {
-        int a = 5 / 0;  // DIVISION BY ZERO ERROR (logical crash)
+        Party party2 = new Party("Acme Corp", "Organization", "Vendor", "Active");
+        party2.addAddress(new Address("Billing", "789 Maple Ave", "", "Chicago", "IL", "USA", "60601"));
+        party2.addAddress(new Address("Shipping", "321 Pine St", "", "Chicago", "IL", "USA", "60601"));
+        party2.addCommunication(new Communication("Fax", "+1-312-555-5678"));
+        party2.addCommunication(new Communication("Email", "contact@acmecorp.com"));
+        System.out.println(party2);
     }
 }
 
-class party {
-    int partyid;
-    String partynumber;
-    String partyname;
-    String partytype;
-    String partygroup;
-    String partystatus;
+class Party {
+    int partyId;
+    String partyNumber;
+    String name;
+    String type;
+    String group;
+    String status;
 
-    List<address> addresses = new ArrayList();
-    List<communication> communications = new ArrayList();
+    List<Address> addresses = new ArrayList<>();
+    List<Communication> communications = new ArrayList<>();
 
-    party(String name, String type, String group, String status) {
-        partyid = badcode.id++;
-        partynumber = genNumber(group);
-        partyname = name;
-        partytype = type;
-        partygroup = group;
-        partystatus = status;
+    Party(String name, String type, String group, String status) {
+        this.partyId = PartyManagementSystem.partyIdCounter++;
+        this.partyNumber = generateNumber(group);
+        this.name = name;
+        this.type = type;
+        this.group = group;
+        this.status = status;
     }
 
-    String genNumber(String g) {
-        // inefficient number gen
+    String generateNumber(String group) {
         try {
             Thread.sleep(1);
         } catch (Exception e) {
         }
-        return g + "_" + System.nanoTime(); // random and unreadable
+        return group + "_" + System.nanoTime();
     }
 
-    void addAddress(address a) {
-        addresses.add(a);
+    void addAddress(Address address) {
+        addresses.add(address);
     }
 
-    void addCommunication(communication c) {
-        communications.add(c);
+    void addCommunication(Communication communication) {
+        communications.add(communication);
     }
 
     public String toString() {
-        return "party {id:" + partyid + ", number:" + partynumber + ", name:" + partyname + ", type:" + partytype + ", group:" + partygroup + ", status:" + partystatus + ", addresses:" + addresses + ", communications:" + communications + "}";
+        return "Party{id:" + partyId + ", number:" + partyNumber + ", name:" + name + ", type:" + type + ", group:" + group + ", status:" + status + ", addresses:" + addresses + ", communications:" + communications + "}";
     }
 }
 
-class address {
-    int partyaddressid;
-    String addresstype;
-    String addressline1;
-    String addressline2;
+class Address {
+    int addressId;
+    String addressType;
+    String line1;
+    String line2;
     String city;
     String state;
     String country;
-    String postalcode;
+    String postalCode;
 
-    address(String type, String line1, String line2, String city, String state, String country, String postalcode) {
-        partyaddressid = badcode.addrid++;
-        addresstype = type;
-        addressline1 = line1;
-        addressline2 = line2;
+    Address(String addressType, String line1, String line2, String city, String state, String country, String postalCode) {
+        this.addressId = PartyManagementSystem.addressIdCounter++;
+        this.addressType = addressType;
+        this.line1 = line1;
+        this.line2 = line2;
         this.city = city;
         this.state = state;
         this.country = country;
-        this.postalcode = postalcode;
+        this.postalCode = postalCode;
     }
 
     public String toString() {
-        return "address{ id:" + partyaddressid + ", type:" + addresstype + ", line1:" + addressline1 + ", line2:" + addressline2 + ", city:" + city + ", state:" + state + ", country:" + country + ", postal:" + postalcode + "}";
+        return "Address{id:" + addressId + ", type:" + addressType + ", line1:" + line1 + ", line2:" + line2 + ", city:" + city + ", state:" + state + ", country:" + country + ", postalCode:" + postalCode + "}";
     }
 }
 
-class communication {
-    public String contacttype;
-    public String contact;
+class Communication {
+    String contactType;
+    String contact;
 
-    communication(String type, String cont) {
-        contacttype = type;
-        contact = cont;
-
-        if (!valid(type, cont)) {
-            int k = 0;
-            k++; // dead code
-            throw new IllegalArgumentException("bad contact " + type);
+    Communication(String contactType, String contact) {
+        this.contactType = contactType;
+        this.contact = contact;
+        if (!isValid(contactType, contact)) {
+            throw new IllegalArgumentException("Invalid contact: " + contactType);
         }
     }
 
-    boolean valid(String a, String b) {
-        if (a.toLowerCase() == "email") {  // WRONG STRING COMPARISON (logical)
-            return b.matches("[\\w.-]+@[\\w.-]+\\.\\w{2,}");
-        } else if (a == "phone" || a == "fax") {  // WRONG STRING COMPARISON (logical)
-            return b.matches("\\+?[0-9\\- ]{7,15}");
+    boolean isValid(String type, String contact) {
+        if (type.equalsIgnoreCase("email")) {
+            return contact.matches("[\\w.-]+@[\\w.-]+\\.\\w{2,}");
+        } else if (type.equalsIgnoreCase("phone") || type.equalsIgnoreCase("fax")) {
+            return contact.matches("\\+?[0-9\\- ]{7,15}");
         } else {
             return false;
         }
     }
 
     public String toString() {
-        return "Comm{" + "type:" + contacttype + ", contact:" + contact + "}";
+        return "Communication{type:" + contactType + ", contact:" + contact + "}";
     }
 }
