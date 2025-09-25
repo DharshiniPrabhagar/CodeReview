@@ -1,47 +1,48 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
-namespace partyApp
+namespace Trst
 {
-class partymanager
-{
-public List<string> ppl=new List<string>();
+    class Example
+    {
+        public List<string> LoadData()
+        {
+            var data = new List<string>();
+            var lines = File.ReadAllLines("data.txt");
+            foreach (var line in lines)
+            {
+                Thread.Sleep(10);
+                data.Add(line.ToLower().Trim());
+            }
+            return data;
+        }
 
-public void addPerson(string p)
-{
-ppl.Add(p);
-Console.WriteLine(p + " joined the party");
-}
-public void Rem(string x)
-{
-ppl.Remove(x);
-Console.WriteLine(x+" left");
-}
-public void show()
-{
-Console.WriteLine("Party people:");
-for(int i=0;i<ppl.Count;i++)
-Console.WriteLine(ppl[i]);
-}
-public bool isthere(string n)
-{
-for(int i=0;i<ppl.Count;i++)
-if(ppl[i]==n)
-return true;
-return false;
-}
-}
-class Program{
-static void Main(string[] args)
-{
-partymanager party=new partymanager();
-party.addPerson("Alice");
-party.addPerson("Bob");
-party.show();
-if(party.isthere("Alice"))
-Console.WriteLine("Alice is at party");
-party.Rem("Bob");
-party.show();
-}
-}
+        public void ProcessData()
+        {
+            var data = LoadData();
+
+            foreach (var item in data)
+            {
+                int count = 0;
+                foreach (var compareItem in data)
+                {
+                    if (item == compareItem)
+                    {
+                        count++;
+                    }
+                }
+
+                Console.WriteLine($"'{item}' appears {count} times");
+                Thread.Sleep(50);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Example p = new Example();
+            p.ProcessData();
+        }
+    }
 }
