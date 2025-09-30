@@ -4,17 +4,17 @@ Line Number: 1
 Actual Code: ```import java.nio.file.*;```
 Topic: Imports
 Guideline: Avoid wildcard imports. Be precise to maintain code readability and avoid ambiguity.
-Review Comment: Avoid using wildcard imports as they can lead to ambiguity and unnecessary inclusion of unused classes. Import only the specific classes that are required.
+Review Comment: Using wildcard imports can lead to ambiguity and unnecessary inclusion of unused classes. It is better to import only the required classes explicitly.
 Corrected Code: ```import java.nio.file.Files;```  
 ```import java.nio.file.Paths;```
-Explanation: Using specific imports improves code readability and ensures that only the necessary classes are included, reducing potential conflicts and improving maintainability.
+Explanation: Explicit imports improve code readability and ensure that only the necessary classes are included, reducing potential conflicts and improving maintainability.
 Confidence Score: 1.0
 
 Line Number: 2
 Actual Code: ```Files.write(Paths.get("output.txt"), "Hello, World!\nLine 2\nLine 3".getBytes());```
 Topic: Resource Management
 Guideline: Always close I/O streams, sockets, and database connections in a finally block or use try-with-resources.
-Review Comment: The code does not use a try-with-resources block to ensure that the file resources are properly closed after writing. This can lead to resource leaks.
+Review Comment: The code does not use a try-with-resources block to ensure that resources are properly closed after use. This can lead to resource leaks.
 Corrected Code:
 ```java
 try {
@@ -30,35 +30,35 @@ Review comments based on NFR aspects:
 
 Performance/Efficiency Review Comments: No specific performance issues were identified in the code.
 
-Dead/Unused Code Review Comments: No dead or unused code was identified in the code.
+Dead/Unused Code Review Comments: No dead or unused code was found in the snippet.
 
-Inefficient Code Constructs Review Comments: No inefficient code constructs were identified in the code.
+Inefficient Code Constructs Review Comments: No inefficient code constructs were identified in the snippet.
 
-Modular Code Review Comments: The code is not modular as it directly performs file operations in the main logic. It can be refactored to separate the file writing logic into a utility method or class for better modularity and reusability.
+Modular Code Review Comments: The code is not modular as it directly performs file writing without encapsulating the logic in a reusable method or class. Refactoring the code to include a method or class for file operations would improve modularity.
 
 Refactored Code:
 ```java
-// filename: FileWriterUtil.java
+// filename: FileWriterUtility.java
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileWriterUtil {
-    public static void writeToFile(String filePath, String content) throws IOException {
-        Files.write(Paths.get(filePath), content.getBytes());
+public class FileWriterUtility {
+    public static void writeToFile(String filePath, String content) {
+        try {
+            Files.write(Paths.get(filePath), content.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
 // filename: Main.java
 public class Main {
     public static void main(String[] args) {
-        try {
-            FileWriterUtil.writeToFile("output.txt", "Hello, World!\nLine 2\nLine 3");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String filePath = "output.txt";
+        String content = "Hello, World!\nLine 2\nLine 3";
+        FileWriterUtility.writeToFile(filePath, content);
     }
 }
 ```
-
-Review Comments Saved to: https://github.com/DharshiniPrabhagar/CodeReview/blob/main/student_code_review.md
